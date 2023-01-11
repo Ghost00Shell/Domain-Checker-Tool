@@ -69,7 +69,7 @@
 
 //CHECK IF REQUEST METHOD IS POST AND DOMAIN INPUT IS NOT VALID
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["domain"]) && is_string($_POST["domain"])){
-
+ require ("API.php");
     //USER INPUT DOMAIN
 $domain = filter_var($_POST["domain"], FILTER_SANITIZE_URL);
 if(preg_match( '/^(http|https):\\/\\/[a-z0-9_]+([\\-\\.]{1}[a-z_0-9]+)*\\.[_a-z]{2,5}'.'((:[0-9]{1,5})?\\/.*)?$/i', $domain)){
@@ -78,11 +78,11 @@ if(preg_match( '/^(http|https):\\/\\/[a-z0-9_]+([\\-\\.]{1}[a-z_0-9]+)*\\.[_a-z]
     return;
   }
 
-//API KEY FROM ANY OUTLET 
-$api = "45ebb5bbae1b61cde28526322c2c50f2";
+
+
 
 //URL FROM THE OUTLET (Replace The Url If Outlet is Different From api.whoapi.com)
-$url = "http://api.whoapi.com/?apikey=".$api."&r=whois&domain=".$domain."&ip=";
+$url = "http://api.whoapi.com/?apikey=API_KEY&r=whois&domain=".$domain."&ip=";
  
 //INITIALIZING...
 $curl = curl_init();
