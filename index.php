@@ -62,9 +62,6 @@
 </form>
 </div>
 
-<?php if(!empty($err)): ?>
-
-<?php endif; ?>
 
 
 
