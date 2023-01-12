@@ -58,7 +58,7 @@
 <input type="text" placeholder="Enter Domain Name" name="domain" class="form-control"/>
 <small><i>Required Format: "www.example.com" or "example.com".</i></small>
 </div>
-<input type="submit" class="btn btn-primary bg-font" value="SEARCH DOMAIN">
+<input type="submit" class="btn btn-primary bg-font" value="LOOKUP DOMAIN">
 </form>
 </div>
 
