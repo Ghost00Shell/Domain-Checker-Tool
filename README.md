@@ -1,3 +1,5 @@
+ <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/oladoyinboadverts/Domain-Checker-Tool?label=FILE%20SIZE&style=for-the-badge">
+
 # Domain-Checker-Tool
 Domain Checker Tool Fully Written In PHP/Boostrap 5 with WhoAPI. 
 
