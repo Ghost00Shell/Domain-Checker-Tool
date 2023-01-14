@@ -70,7 +70,7 @@ ERROR_REPORTING(0);
 
 $screenresult["full_size_https"] = $d_status = $result["whois_server"] = $result["date_created"] = $result["date_expires"] = $result["date_updated"] = $result["nameservers"][0] = $result["nameservers"][1] = $result["contacts"][0]["organization"] = $result["contacts"][1]["country"] = $result["contacts"][1]["email"] = "";
 
-//CHECK IF REQUEST METHOD IS POST AND DOMAIN INPUT IS NOT VALID
+//CHECK IF REQUEST METHOD IS POST AND DOMAIN INPUT IS VALID
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["domain"]) && is_string($_POST["domain"])){
 
 
