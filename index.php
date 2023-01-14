@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>DOMAIN TOOL</title>
+        <title>DOMAIN AVAILABILITY CHECKER</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width:device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -66,10 +66,14 @@
 
 
 <?php
+ERROR_REPORTING(0);
+
+$screenresult["full_size_https"] = $d_status = $result["whois_server"] = $result["date_created"] = $result["date_expires"] = $result["date_updated"] = $result["nameservers"][0] = $result["nameservers"][1] = $result["contacts"][0]["organization"] = $result["contacts"][1]["country"] = $result["contacts"][1]["email"] = "";
 
 //CHECK IF REQUEST METHOD IS POST AND DOMAIN INPUT IS NOT VALID
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["domain"]) && is_string($_POST["domain"])){
- require ("API.php");
+
+
     //USER INPUT DOMAIN
 $domain = filter_var($_POST["domain"], FILTER_SANITIZE_URL);
 if(preg_match( '/^(http|https):\\/\\/[a-z0-9_]+([\\-\\.]{1}[a-z_0-9]+)*\\.[_a-z]{2,5}'.'((:[0-9]{1,5})?\\/.*)?$/i', $domain)){
@@ -78,14 +82,14 @@ if(preg_match( '/^(http|https):\\/\\/[a-z0-9_]+([\\-\\.]{1}[a-z_0-9]+)*\\.[_a-z]
     return;
   }
 
-
+  require ("API.php");
 
 
 //URL FROM THE OUTLET (Replace The Url If Outlet is Different From api.whoapi.com)
 $url = "http://api.whoapi.com/?apikey=".API_KEY."&r=whois&domain=".$domain."&ip=";
- 
+ $screenshot = "http://api.whoapi.com/?apikey=".API_KEY."&r=screenshot&fullurl=".$domain."&process=thumb&resolution=1366x768&asap=true&node_geo=US&delay=&thumbwidth=&thumbheight=";
 //INITIALIZING...
-$curl = curl_init();
+$curl = curl_init($url);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_URL, $url);
 
@@ -94,6 +98,18 @@ $result = json_decode(curl_exec($curl), true);
 
 curl_close($curl);
 
+//IMAGE SCREENSHOT INITIALIZING...
+$scr = curl_init($screenshot);
+curl_setopt($scr, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($scr, CURLOPT_URL, $screenshot);
+$screenresult = json_decode(curl_exec($scr), true);
+curl_close($scr);
+
+//CHECK IF API LIMIT EXCEEDS
+if ($result["status"] == 35){
+  echo '<br><div class="container alert alert-danger"><h5>API LIMIT EXCEEDED</h5></div>';
+return;
+}
 
 //CHECK IF DOMAIN IS REGISTERED
 $d_status1 = $result["registered"];
@@ -112,7 +128,9 @@ echo'
 <h3>Overview Of '.$domain.'</h3>
 </div>
 
-
+<div class="container">
+<img src="'.$screenresult["full_size_https"].'" width="100%" height="100%" class="rounded" />
+</div>
 
 <div class="container p-5 my-5 border">
 <div class="container">
@@ -135,9 +153,6 @@ echo'
 <h4>Date Updated: <div class="btn btn-success">'.$result["date_updated"].'</div></h4>
 </div><br/>
 
-<div class="container">
-<h4>Date Updated: <div class="btn btn-success">'.$result["date_updated"].'</div></h4>
-</div><br/>
 
 <div class="container">
 <h4>Nameservers: <div class="btn btn-success">'.$result["nameservers"][0].'</div> <div class="btn btn-danger">'.$result["nameservers"][1].'</div></h4>
