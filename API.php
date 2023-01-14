@@ -1,4 +1,4 @@
 <?php
 //API FROM WHOAPI.COM
-define("API_KEY", "INPUT YOUR API KEY HERE");
+Define("API_KEY", "INPUT YOUR API KEY HERE");
 ?>
